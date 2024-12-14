@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailCraft</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+    <header class="header">
+        <div class="logo" id="logo" onclick="animateLogo()">
+            <img src="./assets/logo.png" alt="MailCraft Logo">
+        </div>
+        <h1 class="site-title">MailCraft</h1>
+        <p class="welcome-message">Say goodbye to writers' block. Craft cold emails like a pro!</p>
+        <button id="mode-toggle" class="mode-toggle-btn">
+            <img src="./assets/sun-icon.png" alt="Light Mode" class="mode-icon">
+        </button>
+    </header>
+    <main class="main-content">
+        <div class="card">
+            <h2>📝 Generate Your Email Here ✉️</h2>
+            <form id="email-form">
+                <label for="company">* Company Name:</label>
+                <input type="text" id="company" autocomplete="off" required>
+
+                <label for="company-field">Company's Field of Work:</label>
+                <select id="company-field">
+                    <option value="">-- Select Field of Work --</option>
+                    <option value="IT Services">IT Services</option>
+                    <option value="Consulting">Consulting</option>
+                    <option value="Business Solutions">Business Solutions</option>
+                    <option value="Energy">Energy</option>
+                    <option value="Infrastructure">Infrastructure</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Hospitality">Hospitality</option>
+                    <option value="Legal Services">Legal Services</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Others">Others</option>
+                </select>
+
+                <label for="recruiter-name">Recruiter's Name:</label>
+                <input type="text" id="recruiter-name" autocomplete="off">
+
+                <label for="recruiter-gender">* Recruiter's Gender:</label>
+                <select id="recruiter-gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <label for="role">* Role:</label>
+                <input type="text" id="role" autocomplete="off" required>
+
+                <label for="skills">* Skills:</label>
+                <input type="text" id="skills" autocomplete="off" required>
+
+                <label for="experience">* Experience Level:</label>
+                <select id="experience" required>
+                    <option value="Entry level">Entry level</option>
+                    <option value="Mid level">Mid level</option>
+                    <option value="Senior level">Senior level</option>
+                </select>
+
+                <label for="web-links">Web Links:</label>
+                <input type="text" id="web-links" placeholder="Optional" autocomplete="off">
+
+                <button type="submit" id="generate-button" class="generate-btn">Generate Email</button>
+            </form>
+        </div>
+        <div id="generated-email" class="card">
+            <h3>Your Generated Email:</h3>
+            <textarea id="email-content" rows="10" readonly></textarea>
+            <button id="copy-text" onclick="copyText()">Copy Text</button>
+        </div>
+        <div class="rating">
+            <p>Rate our service:</p>
+            <button onclick="submitRating(1)">⭐ 1</button>
+            <button onclick="submitRating(2)">⭐ 2</button>
+            <button onclick="submitRating(3)">⭐ 3</button>
+            <button onclick="submitRating(4)">⭐ 4</button>
+            <button onclick="submitRating(5)">⭐ 5</button>
+            <p id="rating-feedback" class="rating-feedback"></p>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 MailCraft. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
