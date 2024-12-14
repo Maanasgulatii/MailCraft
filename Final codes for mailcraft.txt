@@ -1,0 +1,572 @@
+index.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MailCraft</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body class="light-mode">
+    <header class="header">
+        <div class="logo" id="logo" onclick="animateLogo()">
+            <img src="./assets/logo.png" alt="MailCraft Logo">
+        </div>
+        <h1 class="site-title">MailCraft</h1>
+        <p class="welcome-message">Say goodbye to writers' block. Craft cold emails like a pro!</p>
+        <button id="mode-toggle" class="mode-toggle-btn">
+            <img src="./assets/sun-icon.png" alt="Light Mode" class="mode-icon">
+        </button>
+    </header>
+    <main class="main-content">
+        <div class="card">
+            <h2>📝 Generate Your Email Here ✉️</h2>
+            <form id="email-form">
+                <label for="company">* Company Name:</label>
+                <input type="text" id="company" autocomplete="off" required>
+
+                <label for="company-field">Company's Field of Work:</label>
+                <select id="company-field">
+                    <option value="">-- Select Field of Work --</option>
+                    <option value="IT Services">IT Services</option>
+                    <option value="Consulting">Consulting</option>
+                    <option value="Business Solutions">Business Solutions</option>
+                    <option value="Energy">Energy</option>
+                    <option value="Infrastructure">Infrastructure</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Education">Education</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Hospitality">Hospitality</option>
+                    <option value="Legal Services">Legal Services</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Others">Others</option>
+                </select>
+
+                <label for="recruiter-name">Recruiter's Name:</label>
+                <input type="text" id="recruiter-name" autocomplete="off">
+
+                <label for="recruiter-gender">* Recruiter's Gender:</label>
+                <select id="recruiter-gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <label for="role">* Role:</label>
+                <input type="text" id="role" autocomplete="off" required>
+
+                <label for="skills">* Skills:</label>
+                <input type="text" id="skills" autocomplete="off" required>
+
+                <label for="experience">* Experience Level:</label>
+                <select id="experience" required>
+                    <option value="Entry level">Entry level</option>
+                    <option value="Mid level">Mid level</option>
+                    <option value="Senior level">Senior level</option>
+                </select>
+
+                <label for="web-links">Web Links:</label>
+                <input type="text" id="web-links" placeholder="Optional" autocomplete="off">
+
+                <button type="submit" id="generate-button" class="generate-btn">Generate Email</button>
+            </form>
+        </div>
+        <div id="generated-email" class="card">
+            <h3>Your Generated Email:</h3>
+            <textarea id="email-content" rows="10" readonly></textarea>
+            <button id="copy-text" onclick="copyText()">Copy Text</button>
+        </div>
+        <div class="rating">
+            <p>Rate our service:</p>
+            <button onclick="submitRating(1)">⭐ 1</button>
+            <button onclick="submitRating(2)">⭐ 2</button>
+            <button onclick="submitRating(3)">⭐ 3</button>
+            <button onclick="submitRating(4)">⭐ 4</button>
+            <button onclick="submitRating(5)">⭐ 5</button>
+            <p id="rating-feedback" class="rating-feedback"></p>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 MailCraft. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+script.js:
+
+// Dark/Light Mode Toggle
+const modeToggleButton = document.getElementById('mode-toggle');
+const body = document.body;
+
+modeToggleButton.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    body.classList.toggle('light-mode');
+});
+
+// Logo Animation
+function animateLogo() {
+    const logo = document.querySelector('.logo img');
+    logo.style.animation = 'logoAnimation 1s ease-out';
+    setTimeout(() => {
+        logo.style.animation = '';
+    }, 1000);
+}
+
+// Copy Text Function
+function copyText() {
+    const emailContent = document.getElementById('email-content');
+    navigator.clipboard.writeText(emailContent.value)
+        .then(() => alert("Email copied to clipboard!"))
+        .catch(err => alert("Failed to copy text: " + err));
+}
+
+// Email Generation Logic
+document.getElementById('email-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const companyName = document.getElementById('company').value;
+    const companyField = document.getElementById('company-field').value;
+    const recruiterName = document.getElementById('recruiter-name').value;
+    const recruiterGender = document.getElementById('recruiter-gender').value;
+    const role = document.getElementById('role').value;
+    const skills = document.getElementById('skills').value;
+    const experienceLevel = document.getElementById('experience').value;
+    const webLinks = document.getElementById('web-links').value;
+
+    let emailContent = `Dear ${recruiterGender === 'Male' ? 'Mr.' : 'Ms.'} ${recruiterName || 'Hiring Manager'},\n\n`;
+
+    emailContent += `I hope this message finds you well. My name is [Your Name], and I am writing to express my interest in the ${role} role at ${companyName}.\n\n`;
+
+    if (companyField) {
+        emailContent += `I deeply admire ${companyName}'s work in the field of ${companyField}, and I am excited about the opportunity to contribute.\n\n`;
+    }
+
+    emailContent += `With my skills in ${skills}, I believe I can make a meaningful impact.\n\n`;
+
+    if (experienceLevel === 'Entry level') {
+        emailContent += `I am eager to learn and grow within the company, bringing a fresh perspective and enthusiasm.\n\n`;
+    } else if (experienceLevel === 'Mid level') {
+        emailContent += `With my experience, I am excited to contribute and collaborate on meaningful projects that can drive success.\n\n`;
+    } else if (experienceLevel === 'Senior level') {
+        emailContent += `I am looking forward to leading initiatives and mentoring others, leveraging my experience to foster growth.\n\n`;
+    }
+
+    if (webLinks.trim()) {
+        emailContent += `You can find more about my work at the following link(s):\n${webLinks}\n\n`;
+    }
+
+    emailContent += `Thank you for considering my application. I look forward to the possibility of working with ${companyName}.\n\nBest regards,\n[Your Name]`;
+
+    document.getElementById('email-content').value = emailContent;
+});
+
+// Rate Button Functionality
+function submitRating(stars) {
+    const feedback = document.getElementById('rating-feedback');
+    feedback.textContent = `Thanks for your valuable feedback! You rated us ${stars} stars.`;
+}
+
+// Rate Button Functionality
+function submitRating(stars) {
+    const feedback = document.getElementById('rating-feedback');
+    feedback.textContent = `Thanks for your valuable feedback! You rated us ${stars} stars.`;
+    
+    // Hide the message after 5 seconds
+    setTimeout(() => {
+        feedback.textContent = '';
+    }, 5000);
+}
+
+
+function submitRating(stars) {
+    const feedback = document.getElementById('rating-feedback');
+    feedback.textContent = `Thanks for your valuable feedback! You rated us ${stars} stars.`;
+
+    // Send the rating to the backend
+    fetch('https://c0ccaccc-3826-479c-beae-5bb60aadbb34-00-be3zijn44prk.sisko.replit.dev:3000/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            rating: stars
+        })
+    })
+    .then(response => {
+        console.log('Response status:', response.status); // Log status code
+        if (!response.ok) {
+            return response.text().then(text => {
+                console.error(`Server Error: ${response.status} - ${text}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data.message); // Log the success message from the backend
+    })
+    .catch(error => {
+        console.error('Fetch Error:', error); // Log fetch error
+    });
+
+    // Hide the feedback message after 5 seconds
+    setTimeout(() => {
+        feedback.textContent = '';
+    }, 5000);
+}
+
+
+
+style.css:
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Font */
+body {
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 15px;
+}
+
+/* Light Mode */
+.light-mode {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Dark Mode */
+.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+.dark-mode header,
+.dark-mode footer,
+.dark-mode .card {
+    background-color: #1c1c1c;
+}
+
+.dark-mode .card input,
+.dark-mode .card textarea,
+.dark-mode .card select {
+    background-color: #2c2c2c;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.dark-mode #email-content {
+    background-color: #2c2c2c;
+    color: #fff;
+}
+
+.dark-mode .mode-toggle-btn img {
+    filter: invert(1);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 15px;
+    background-color: #E6E6FA; /* Lavender color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header .logo {
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.header .logo img {
+    width: 70px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.header .logo img:hover {
+    transform: scale(1.1);
+}
+
+.header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #5D3F6B;
+}
+
+.header .welcome-message {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #E6E6FA; /* Lavender color */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+/* Card */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    resize: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card textarea:focus {
+    outline: none;
+    border-color: #5D3F6B;
+}
+
+/* Input Fields */
+.card input,
+.card select {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card input:focus,
+.card select:focus {
+    outline: none;
+    border-color: #5D3F6B;
+}
+
+/* Button Styles */
+.card button {
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+    padding: 10px 20px;
+    background-color: #5D3F6B;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+    background-color: #4a2f54;
+}
+
+/* Dark/Light Mode Toggle Button */
+.mode-toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.mode-toggle-btn img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+/* Rate Our Service Section */
+.rating {
+    text-align: center;
+    margin-top: 20px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rating-feedback {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #5D3F6B;
+}
+
+/* Logo Animation */
+@keyframes logoAnimation {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Rate Our Service Section */
+.rating {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Ensures spacing from the bottom */
+    position: relative; /* Allows it to move with the page */
+    bottom: 0; /* Removes fixed positioning */
+    left: 0; /* Aligns it properly with the page flow */
+    transform: none; /* Removes unnecessary centering logic */
+}
+
+.rating-feedback {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #5D3F6B;
+}
+
+/* Move 'Generate Your Email Here' heading a little higher */
+.header h1 {
+    margin-top: -10px; /* Adjust this value as needed to move it higher */
+}
+
+
+app.py:
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import json
+import os
+
+app = Flask(__name__)
+CORS(app)
+
+DATA_FILE = "data.json"
+
+# Initialize data.json if it doesn't exist or if it has an invalid structure
+def initialize_data_file():
+    if not os.path.exists(DATA_FILE):
+        # Create a new data.json file with only ratings
+        with open(DATA_FILE, "w") as file:
+            json.dump({
+                "ratings": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0}
+            }, file, indent=4)
+    else:
+        # If the file exists, we load and check its structure
+        try:
+            with open(DATA_FILE, "r") as file:
+                data = json.load(file)
+                # Remove the visits and generated_emails sections if they exist
+                if "generated_emails" in data:
+                    del data["generated_emails"]
+                if "visits" in data:
+                    del data["visits"]
+                # Ensure ratings section is correct
+                if isinstance(data.get("ratings"), dict):
+                    ratings = data["ratings"]
+                    ratings = {str(i): ratings.get(str(i), 0) for i in range(1, 6)}  # Rebuild the ratings structure
+                    data["ratings"] = ratings
+                    save_data(data)
+        except Exception as e:
+            print(f"Error loading or fixing data.json: {e}")
+            # Reinitialize the file if there's an error
+            with open(DATA_FILE, "w") as file:
+                json.dump({
+                    "ratings": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0}
+                }, file, indent=4)
+
+# Load data from data.json
+def load_data():
+    with open(DATA_FILE, "r") as file:
+        return json.load(file)
+
+# Save data to data.json
+def save_data(data):
+    with open(DATA_FILE, "w") as file:
+        json.dump(data, file, indent=4)
+
+@app.route("/submit_rating", methods=["POST"])
+def submit_rating():
+    # Ensure the data.json file is initialized
+    initialize_data_file()
+    data = load_data()
+
+    # Extract the rating from the request JSON
+    try:
+        rating = int(request.json.get("rating"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "Invalid rating value"}), 400
+
+    # Validate that the rating is between 1 and 5
+    if 1 <= rating <= 5:
+        # Increment the count for the given rating
+        data["ratings"][str(rating)] += 1
+
+        # Save the updated data to the file
+        save_data(data)
+
+        # Return a success response
+        return jsonify({"message": "Rating submitted successfully!"}), 200
+    else:
+        # Return an error for invalid ratings
+        return jsonify({"error": "Rating must be between 1 and 5"}), 400
+
+# Function to process ratings on script execution
+def process_ratings():
+    try:
+        print("Processing ratings...")
+        initialize_data_file()
+        data = load_data()
+
+        # Simulated pending ratings (replace with real logic if needed)
+        pending_ratings = [5, 4, 3, 5, 2]  # Example ratings
+
+        for rating in pending_ratings:
+            if str(rating) in data["ratings"]:
+                data["ratings"][str(rating)] += 1
+
+        # Save updated ratings
+        save_data(data)
+        print("Ratings processed successfully.")
+    except Exception as e:
+        print(f"Error processing ratings: {e}")
+
+@app.route('/')
+def home():
+    return "Backend is running!"
+
+if __name__ == "__main__":
+    # Process ratings when the script is run
+    process_ratings()
+    # Set the port to 3000, which Replit uses for web apps
+    port = int(os.environ.get('PORT', 3000))
+    app.run(host="0.0.0.0", port=port)
